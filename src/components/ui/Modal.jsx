@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Modal = ({ isOpen, onClose, title, childern }) => {
+const Modal = ({ isOpen, onClose, title, children }) => {
     if (!isOpen) return null;
 
 
@@ -14,7 +14,7 @@ const Modal = ({ isOpen, onClose, title, childern }) => {
                     <button onClick={onClose} className='text-gray-500'>X</button>
                 </div>
                 {/* Body */}
-                {childern}
+                {children}
             </div>
         </div>
     )
