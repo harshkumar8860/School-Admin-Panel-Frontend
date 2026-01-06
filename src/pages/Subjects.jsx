@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { classes, teachers, subjects, subjectAssignments } from '../data/schoolData';
 import Table from '../components/ui/Table';
 import Modal from '../components/ui/Modal';
 import Button from '../components/ui/Button';
+import { useSchool } from '../context/SchoolContext';
 
 const Subjects = () => {
-  const [assignments, setAssignments] = useState(subjectAssignments);
+  const {classes, teachers, subjects, subjectAssignments, setSubjectAssignments} = useSchool();
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     subjectId: "",
@@ -24,7 +24,7 @@ const Subjects = () => {
       return;
     }
 
-    const exists = assignments.some(
+    const exists = subjectAssignments.some(
       (a) =>
         a.subjectId === Number(subjectId) &&
         a.classId === Number(classId)
@@ -35,7 +35,7 @@ const Subjects = () => {
       return;
     }
 
-    setAssignments((prev) => [
+    setSubjectAssignments((prev) => [
       ...prev,
       {
         id: Date.now(),
@@ -50,7 +50,7 @@ const Subjects = () => {
 
   const handleDelete = (id) => {
     if (window.confirm("Remove assignment?")) {
-      setAssignments((prev) => prev.filter((a) => a.id !== id));
+      setSubjectAssignments((prev) => prev.filter((a) => a.id !== id));
     }
   };
 
@@ -60,7 +60,7 @@ const Subjects = () => {
     { key: "teacher", label: "Teacher" },
   ];
 
-  const tableData = assignments.map((a) => ({
+  const tableData = subjectAssignments.map((a) => ({
     ...a,
     subject: getName(subjects, a.subjectId),
     class: getName(classes, a.classId),

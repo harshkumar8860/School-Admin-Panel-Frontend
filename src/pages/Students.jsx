@@ -3,32 +3,10 @@ import Table from '../components/ui/Table';
 import Modal from '../components/ui/Modal';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import { useSchool } from '../context/SchoolContext';
 
 const Students = () => {
-  // mocked data 
-  const [classes] = useState([
-    { id: 1, name: "Class 1" },
-    { id: 2, name: "Class 2" },
-    { id: 3, name: "Class 3" },
-  ]);
-
-  const [sections] = useState([
-    { id: 1, name: "A", classId: 1 },
-    { id: 2, name: "B", classId: 1 },
-    { id: 3, name: "A", classId: 2 },
-  ]);
-
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      name: "Rahul Sharma",
-      rollNumber: "01",
-      classId: 1,
-      sectionId: 1,
-      status: "ACTIVE",
-    },
-  ]);
-
+  const {classes, sections, students, setStudents} = useSchool();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
 

@@ -1,88 +1,14 @@
-// import React from "react";
-// import { useSchool } from "../context/SchoolContext";
-
-// const Dashboard = () => {
-//   const { classes, teachers, students, subjects } = useSchool();
-//   const stats = [
-//     { label: "Classes", value: classes.length },
-//     { label: "Teachers", value: teachers.length },
-//     { label: "Students", value: students.length },
-//     { label: "Students", value: subjects.length },
-//   ];
-
-
-//   return (
-//     <div>
-//       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-//       <p className="grid grid-cols-1 md:grid-cols-4 gap-4">
-//         {stats.map((s) => (
-//           <div
-//             key={s.label}
-//             className="bg-white p-6 rounded-lg shadow"
-//           >
-//             <p className="text-gray-500 text-sm">{s.label}</p>
-//             <p className="text-3xl font-bold">{s.value}</p>
-//           </div>
-//         ))}
-//       </p>
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
-
-
-
-// import React from "react";
-// import { useSchool } from "../context/SchoolContext";
-
-// const Dashboard = () => {
-//   const {
-//     classes,
-//     teachers,
-//     students,
-//     subjects,
-//   } = useSchool();
-
-//   const stats = [
-//     { label: "Classes", value: classes.length },
-//     { label: "Teachers", value: teachers.length },
-//     { label: "Students", value: students.length },
-//     { label: "Subjects", value: subjects.length },
-//   ];
-
-//   return (
-//     <div>
-//       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-
-//       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-//         {stats.map((s) => (
-//           <div
-//             key={s.label}
-//             className="bg-white p-6 rounded-lg shadow"
-//           >
-//             <p className="text-gray-500 text-sm">{s.label}</p>
-//             <p className="text-3xl font-bold">{s.value}</p>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
-
 import React from "react";
-import {
-  classes,
-  teachers,
-  students,
-  users,
-} from "../data/schoolData";
+import { useSchool } from "../context/SchoolContext";
 
 const Dashboard = () => {
+  const {
+    classes,
+    teachers,
+    students,
+    users,
+  } = useSchool();
+  
   const stats = [
     { label: "Total Classes", value: classes.length },
     { label: "Total Teachers", value: teachers.length },

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { classes, teachers, teacherClassMap } from "../data/schoolData";
 import Button from '../components/ui/Button';
 import Table from "../components/ui/Table";
 import Modal from "../components/ui/Modal";
+import { useSchool } from '../context/SchoolContext';
 
 const Teachers = () => {
-  const [assignments, setAssignments] = useState(teacherClassMap)
+  const { classes, teachers, teacherClassMap, setTeacherClassMap } = useSchool();
   const [modalOpen, setModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const Teachers = () => {
       return;
     }
 
-    const exists = assignments.some(
+    const exists = teacherClassMap.some(
       (a) =>
         a.teacherId === Number(formData.teacherId) &&
         a.classId === Number(formData.classId)
@@ -36,7 +36,7 @@ const Teachers = () => {
       return;
     }
 
-    setAssignments((prev) => [
+    setTeacherClassMap((prev) => [
       ...prev,
       {
         id: Date.now(),
@@ -50,7 +50,7 @@ const Teachers = () => {
 
   const handleDelete = (id) => {
     if (window.confirm("Remove this assignment?")) {
-      setAssignments((prev) => prev.filter((a) => a.id !== id));
+      setTeacherClassMap((prev) => prev.filter((a) => a.id !== id));
     }
   };
 
@@ -59,7 +59,7 @@ const Teachers = () => {
     { key: "className", label: "Class" },
   ];
 
-  const tableData = assignments.map((a) => ({
+  const tableData = teacherClassMap.map((a) => ({
     ...a,
     teacherName: getTeacherName(a.teacherId),
     className: getClassName(a.classId),

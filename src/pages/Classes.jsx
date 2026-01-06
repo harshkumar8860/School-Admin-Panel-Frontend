@@ -3,14 +3,10 @@ import Table from "../components/ui/Table";
 import Modal from "../components/ui/Modal";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import { useSchool } from "../context/SchoolContext";
 
 const Classes = () => {
-  const [classes, setClasses] = useState([
-    { id: 1, name: "Class 1", capacity: 10 },
-    { id: 2, name: "Class 2", capacity: 12 },
-    { id: 3, name: "Class 3", capacity: 8 },
-  ]);
-
+  const { classes, setClasses } = useSchool();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingClass, setEditingClass] = useState(null);
   const [formData, setFormData] = useState({ name: "", capacity: "" });
@@ -102,7 +98,7 @@ const Classes = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Classes</h1>
         <Button onClick={openAddModal}>Add Class</Button>
-      </div>
+      </div>d
 
       {/* Table */}
       <Table

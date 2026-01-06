@@ -1,28 +1,16 @@
 import React, { useState } from 'react'
 import Button from '../components/ui/Button';
-
+import { useSchool } from '../context/SchoolContext';
 
 const Attendance = () => {
-  const classes = [
-    { id: 1, name: "Class 1" },
-    { id: 2, name: "Class 2" },
-  ];
-
-  const sections = [
-    { id: 1, name: "A", classId: 1 },
-    { id: 2, name: "B", classId: 1 },
-    { id: 3, name: "A", classId: 2 },
-  ];
-
-  const students = [
-    { id: 1, name: "Rahul", rollNumber: "01", classId: 1, sectionId: 1 },
-    { id: 2, name: "Aman", rollNumber: "02", classId: 1, sectionId: 1 },
-  ];
-
+  const { classes, students, sections, attendance, setAttendance } = useSchool();
   const [date, setDate] = useState("");
   const [classId, setClassId] = useState("");
   const [sectionId, setSectionId] = useState("");
-  const [attendance, setAttendance] = useState([]);
+
+  const [sessionRecords, setSessionRecords] = useState([]);
+  const [subjectId, setSubjectId] = useState("");
+  // const [attendance, setAttendance] = useState([]);
 
   const loadStudents = () => {
     if (!date || !classId || !sectionId) {
@@ -42,11 +30,11 @@ const Attendance = () => {
         status: "PRESENT", // default
       }));
 
-    setAttendance(filtered);
+    setSessionRecords(filtered);
   }
 
   const toggleStatus = (id) => {
-    setAttendance((prev) =>
+    setSessionRecords((prev) =>
       prev.map((rec) =>
         rec.studentId === id
           ? {
@@ -57,20 +45,56 @@ const Attendance = () => {
     );
   };
 
-  const saveAttendance = () => {
-    const payload = {
-      date,
-      classId: Number(classId),
-      sectionId: Number(sectionId),
-      records: attendance.map(({ studentId, status }) => ({
-        studentId,
-        status,
-      })),
-    };
+  // const saveAttendance = () => {
+  //   const payload = {
+  //     date,
+  //     classId: Number(classId),
+  //     sectionId: Number(sectionId),
+  //     records: attendance.map(({ studentId, status }) => ({
+  //       studentId,
+  //       status,
+  //     })),
+  //   };
 
-    console.log("Attendance payload:", payload);
-    alert("Attendance saved (check console)");
+  //   console.log("Attendance payload:", payload);
+  //   alert("Attendance saved (check console)");
+  // };
+
+  const saveAttendance = () => {
+    const exists = attendance.some(
+      (a) =>
+        a.date === date &&
+        a.classId === +classId &&
+        a.sectionId === +sectionId &&
+        a.subjectId === +subjectId
+    );
+
+    if (exists) {
+      alert("Attendance already marked for this subject & date");
+      return;
+    }
+
+    setAttendance((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        date,
+        classId: +classId,
+        sectionId: +sectionId,
+        subjectId: +subjectId,
+        records: sessionRecords.map(({ studentId, status }) => ({
+          studentId,
+          status,
+        })),
+      },
+    ]);
+    console.log(attendance);
+    
+    alert("Attendance saved");
+    setSessionRecords([]);
   };
+
+
   return (
     <div>
       <h1 className='text-2xl font-bold mb-4'>Attendance</h1>
@@ -124,7 +148,7 @@ const Attendance = () => {
               </tr>
             </thead>
             <tbody>
-              {attendance.map((rec) => (
+              {sessionRecords.map((rec) => (
                 <tr key={rec.studentId}>
                   <td className='border p-2'>{rec.rollNumber}</td>
                   <td className='border p-2'>{rec.name}</td>

@@ -3,21 +3,10 @@ import Table from '../components/ui/Table';
 import Modal from '../components/ui/Modal';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import { useSchool } from '../context/SchoolContext';
 
 const Sections = () => {
-  // Data that will come from API
-  const [classes] = useState([
-    { id: 1, name: "Class 1" },
-    { id: 2, name: "Class 2" },
-    { id: 3, name: "Class 3" },
-  ]);
-
-  const [sections, setSections] = useState([
-    { id: 1, name: "A", classId: 1 },
-    { id: 2, name: "B", classId: 1 },
-    { id: 3, name: "A", classId: 2 },
-  ])
-
+  const {classes, sections, setSections} = useSchool();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingSection, setEditingSection] = useState(null);
   const [selectedClass, setSelectedClass] = useState("");
