@@ -12,7 +12,7 @@ const Sidebar = () => {
       </div>
 
       <nav className='flex-1 p-4 space-y-2'>
-        <NavLink to="/" className={linkClass}>Dashboard</NavLink>
+        <NavLink to="/" end className={linkClass}>Dashboard</NavLink>
         <NavLink to="/users" className={linkClass}>Users</NavLink>
         <NavLink to="/classes" className={linkClass}>Classes</NavLink>
         <NavLink to="/sections" className={linkClass}>Sections</NavLink>

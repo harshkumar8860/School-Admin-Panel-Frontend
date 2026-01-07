@@ -137,7 +137,7 @@ const Attendance = () => {
         <Button onClick={loadStudents}>Load Students</Button>
       </div>
 
-      {attendance.length > 0 && (
+      {sessionRecords.length > 0 && (
         <>
           <table className='w-full border mb-4'>
             <thead className='bg-gray-100'>

@@ -98,7 +98,7 @@ const Classes = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Classes</h1>
         <Button onClick={openAddModal}>Add Class</Button>
-      </div>d
+      </div>
 
       {/* Table */}
       <Table

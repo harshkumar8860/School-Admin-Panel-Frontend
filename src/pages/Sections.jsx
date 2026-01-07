@@ -1,4 +1,4 @@
-import React, { lazy, useState } from 'react'
+import React, { useState } from 'react'
 import Table from '../components/ui/Table';
 import Modal from '../components/ui/Modal';
 import Input from '../components/ui/Input';
@@ -101,11 +101,11 @@ const Sections = () => {
         <Button onClick={openAddModal}>Add Section</Button>
       </div>
 
-      <div className='mb-4 flex gap=4 items-center'>
+      <div className='mb-4 flex gap-4 items-center'>
         <label className='text-sm font-medium'>Filter by Class:</label>
 
         <select
-          className='boder rounded px-3 py-2 text-sm'
+          className='border rounded px-3 py-2 text-sm'
           value={selectedClass}
           onChange={(e) => setSelectedClass(e.target.value)}
         >

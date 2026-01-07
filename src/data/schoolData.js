@@ -103,6 +103,7 @@ sections.forEach((section) => {
   for (let i = 1; i <= classes.length; i++) {
     students.push({
       name: `Student ${studentId}`,
+      // email: `${section.name.replace(" ", "").toLowerCase()}@student.com`,
       rollNumber: `${section.classId}${section.name}${i}`,
       classId: section.classId,
       sectionId: section.id,
