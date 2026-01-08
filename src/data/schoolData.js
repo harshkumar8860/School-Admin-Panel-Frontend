@@ -103,7 +103,7 @@ sections.forEach((section) => {
   for (let i = 1; i <= classes.length; i++) {
     students.push({
       name: `Student ${studentId}`,
-      // email: `${section.name.replace(" ", "").toLowerCase()}@student.com`,
+      email: `student${studentId}@student.com`,
       rollNumber: `${section.classId}${section.name}${i}`,
       classId: section.classId,
       sectionId: section.id,
@@ -112,6 +112,8 @@ sections.forEach((section) => {
     });
   }
 });
+
+console.log("students",students);
 
 /* =======================
    USERS
@@ -151,38 +153,23 @@ export const users = [
    (per class + section)
 ======================= */
 export const attendance = [];
+const today = new Date().toISOString().split("T")[0];
 
 let attendanceId = 1;
 sections.forEach((section) => {
-  subjectAssignments
-    .filter(sa => sa.classId === section.classId)
-    .forEach(sa => {
-      attendance.push({
-        id: attendanceId++,
-        date: "2026-01-01",
-        classId: section.classId,
-        sectionId: section.id,
-        subjectId: sa.subjectId,
-        records: students
-          .filter(s => s.sectionId === section.id)
-          .map((s) => ({
-            studentId: s.id,
-            status: Math.random() > 0.2 ? "PRESENT" : "ABSENT",
-          })),
-      });
-    });
+  attendance.push({
+    id: attendanceId++,
+    date: today,
+    classId: section.classId,
+    sectionId: section.id,
+    records: students
+      .filter(s => s.sectionId === section.id)
+      .map((s) => ({
+        studentId: s.id,
+        status: "ABSENT",
+      })),
+  });
 });
 
-// sections.forEach((section) => {
-//     attendance.push({
-//         date: "2026-01-01",
-//         classId: section.classId,
-//         sectionId: section.id,
-//         records: [
-//             { studentId: 1, status: "PRESENT" },
-//             { studentId: 2, status: "ABSENT" },
-//         ],
-//         id: attendanceId++,
-//     });
-// });
+console.log("attendance", attendance);
 
