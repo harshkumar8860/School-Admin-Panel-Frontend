@@ -12,9 +12,7 @@ const Attendance = () => {
   );
   const [classId, setClassId] = useState("");
   const [sectionId, setSectionId] = useState("");
-
   const [sessionRecords, setSessionRecords] = useState([]);
-  const [subjectId, setSubjectId] = useState("");
 
   const loadStudents = () => {
     if (!date || !classId || !sectionId) {
@@ -22,20 +20,29 @@ const Attendance = () => {
       return;
     }
 
-    const filtered = students
-      .filter((s) =>
-        s.classId === Number(classId) &&
-        s.sectionId === Number(sectionId)
-      )
-      .map((s) => ({
-        studentId: s.id,
-        name: s.name,
-        rollNumber: s.rollNumber,
-        status: "PRESENT", // default
-      }));
+    const existing = attendance.find(
+      (a) => a.date === date &&
+        a.classId === +classId &&
+        a.sectionId === +sectionId
+    );
 
-    setSessionRecords(filtered);
-  }
+    if (!existing) {
+      alert("No attendance record found for this date");
+      return;
+    }
+
+    const recordWithDetails = existing.records.map((r) => {
+      const student = students.find(s => s.id === r.studentId);
+      return {
+        studentId: r.studentId,
+        name: student?.name,
+        rollNumber: student?.rollNumber,
+        status: r.status,
+      };
+    });
+    console.log(recordWithDetails);
+    setSessionRecords(recordWithDetails);
+  };
 
   const toggleStatus = (id) => {
     setSessionRecords((prev) =>
@@ -49,38 +56,28 @@ const Attendance = () => {
     );
   };
 
-
   const saveAttendance = () => {
-    const exists = attendance.some(
-      (a) =>
-        a.date === date &&
-        a.classId === +classId &&
-        a.sectionId === +sectionId &&
-        a.subjectId === +subjectId
-    );
-
-    if (exists) {
-      alert("Attendance already marked for this subject & date");
+    if (sessionRecords.length === 0) {
+      alert("No students loaded");
       return;
     }
 
-    setAttendance((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        date,
-        classId: +classId,
-        sectionId: +sectionId,
-        subjectId: +subjectId,
-        records: sessionRecords.map(({ studentId, status }) => ({
-          studentId,
-          status,
-        })),
-      },
-    ]);
-    console.log(attendance);
-    alert("Attendance saved");
-    setSessionRecords([]);
+    setAttendance((prev) =>
+      prev.map((a) =>
+        a.date === date &&
+          a.classId === +classId &&
+          a.sectionId === +sectionId
+          ? {
+            ...a,
+            records: sessionRecords.map(({ studentId, status }) => ({
+              studentId,
+              status,
+            })),
+          } : a
+      )
+    );
+    console.log(sessionRecords);
+    alert("Attendance saved successfully");
   };
 
   return (
@@ -143,7 +140,7 @@ const Attendance = () => {
                   <td className='border p-2 text-center'>
                     <button
                       onClick={() => toggleStatus(rec.studentId)}
-                      className={`px-3 py-2 rounded text-white ${rec.status === "PRESENT"
+                      className={`px-3 py-2 rounded text-white hover:cursor-pointer ${rec.status === "PRESENT"
                         ? "bg-green-500"
                         : "bg-red-500"
                         }`}
@@ -179,7 +176,7 @@ const Attendance = () => {
                   </td>
                   <td className="border p-2 text-center">{a.date}</td>
                   <td className="border p-2 text-center">
-                    <span className={`${a.status === "PRESENT" ? "bg-green-500" : "bg-red-500"} p-1 rounded w-20`}>
+                    <span className={`${a.status === "PRESENT" ? "bg-green-500" : "bg-red-500"} p-1 rounded`}>
                       {a.status}
                     </span>
 
