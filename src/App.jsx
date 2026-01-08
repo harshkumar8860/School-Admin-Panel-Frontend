@@ -4,11 +4,13 @@ import AdminLayout from './layouts/AdminLayout'
 import AdminRoutes from './routes/AdminRoutes'
 import Login from './pages/Login'
 import ProtectedRoute from './routes/ProtectedRoute'
+import TeacherAttendanceModal from './components/TeacherAttendanceModal'
 
 function App() {
 
   return (
     <BrowserRouter>
+      <TeacherAttendanceModal />
       <Routes>
         {/* Public */}
         <Route path='/login' element={<Login />} />

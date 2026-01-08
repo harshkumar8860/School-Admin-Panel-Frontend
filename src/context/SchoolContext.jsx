@@ -16,6 +16,7 @@ export const SchoolProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(
         JSON.parse(localStorage.getItem("currentUser")) || null
     );
+    const [teacherAttendance, setTeacherAttendance] = useState([]);
 
     const login = (email, password) => {
         const user = users.find(
@@ -36,11 +37,6 @@ export const SchoolProvider = ({ children }) => {
         localStorage.removeItem("currentUser");
     }
 
-    // useEffect(() => {
-    //     const savedUser = localStorage.getItem("currentUser");
-    //     if (savedUser) setCurrentUser(JSON.parse(savedUser));
-    // }, []);
-
     useEffect(() => {
         if (currentUser) {
             localStorage.setItem("currentUser", JSON.stringify(currentUser));
@@ -48,6 +44,22 @@ export const SchoolProvider = ({ children }) => {
             localStorage.removeItem("currentUser");
         }
     }, [currentUser]);
+
+    const today = new Date().toISOString().split("T")[0];
+
+    const currentTeacher =
+        currentUser?.role === "TEACHER"
+            ? teachers.find(t => t.email === currentUser.email)
+            : null;
+
+    const mustMarkTeacherAttendance =
+        currentUser?.role === "TEACHER" &&
+        currentTeacher &&
+        !teacherAttendance.some(
+            (a) =>
+                a.teacherId === currentTeacher.id &&
+                a.date === today
+        );
 
     return (
         <SchoolContext.Provider
@@ -61,7 +73,9 @@ export const SchoolProvider = ({ children }) => {
                 subjectAssignments, setSubjectAssignments,
                 users, setUsers,
                 attendance, setAttendance,
-                currentUser, login, logout
+                currentUser, currentTeacher, login, logout,
+                teacherAttendance, setTeacherAttendance,
+                mustMarkTeacherAttendance,
             }}
         >
             {children}

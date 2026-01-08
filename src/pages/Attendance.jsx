@@ -3,14 +3,18 @@ import Button from '../components/ui/Button';
 import { useSchool } from '../context/SchoolContext';
 
 const Attendance = () => {
-  const { classes, students, sections, attendance, setAttendance } = useSchool();
-  const [date, setDate] = useState("");
+  const { classes, students, sections, teachers,
+    attendance, setAttendance,
+    currentUser, teacherAttendance,
+    setTeacherAttendance } = useSchool();
+  const [date, setDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [classId, setClassId] = useState("");
   const [sectionId, setSectionId] = useState("");
 
   const [sessionRecords, setSessionRecords] = useState([]);
   const [subjectId, setSubjectId] = useState("");
-  // const [attendance, setAttendance] = useState([]);
 
   const loadStudents = () => {
     if (!date || !classId || !sectionId) {
@@ -45,20 +49,6 @@ const Attendance = () => {
     );
   };
 
-  // const saveAttendance = () => {
-  //   const payload = {
-  //     date,
-  //     classId: Number(classId),
-  //     sectionId: Number(sectionId),
-  //     records: attendance.map(({ studentId, status }) => ({
-  //       studentId,
-  //       status,
-  //     })),
-  //   };
-
-  //   console.log("Attendance payload:", payload);
-  //   alert("Attendance saved (check console)");
-  // };
 
   const saveAttendance = () => {
     const exists = attendance.some(
@@ -89,11 +79,9 @@ const Attendance = () => {
       },
     ]);
     console.log(attendance);
-    
     alert("Attendance saved");
     setSessionRecords([]);
   };
-
 
   return (
     <div>
@@ -169,6 +157,38 @@ const Attendance = () => {
           </table>
           <Button onClick={saveAttendance}>Save Attendance</Button>
         </>
+      )}
+
+      {currentUser.role === "ADMIN" && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-2">Teacher Attendance</h2>
+
+          <table className="w-full border">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="border p-2">Teacher</th>
+                <th className="border p-2">Date</th>
+                <th className="border p-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {teacherAttendance.map((a) => (
+                <tr key={a.id}>
+                  <td className="border p-2 text-center">
+                    {teachers.find((t) => t.id === a.teacherId)?.name || "-"}
+                  </td>
+                  <td className="border p-2 text-center">{a.date}</td>
+                  <td className="border p-2 text-center">
+                    <span className={`${a.status === "PRESENT" ? "bg-green-500" : "bg-red-500"} p-1 rounded w-20`}>
+                      {a.status}
+                    </span>
+
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div >
   )

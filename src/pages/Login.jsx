@@ -48,8 +48,9 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-
-        <Button type="submit" variant='primary' className="w-full">Login</Button>
+        <div className='flex justify-center'>
+          <Button type="submit">Login</Button >
+        </div>
       </form>
     </div>
   )
