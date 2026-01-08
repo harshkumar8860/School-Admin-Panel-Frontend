@@ -23,7 +23,9 @@ export const SchoolProvider = ({ children }) => {
             (u) =>
                 u.email === email &&
                 u.password === password &&
-                (u.role === "ADMIN" || u.role === "TEACHER"));
+                ["ADMIN", "TEACHER", "STUDENT"].includes(u.role)
+            // (u.role === "ADMIN" || u.role === "TEACHER")
+        );
         if (user) {
             setCurrentUser(user);
             localStorage.setItem("currentUser", JSON.stringify(user));
@@ -52,6 +54,18 @@ export const SchoolProvider = ({ children }) => {
             ? teachers.find(t => t.email === currentUser.email)
             : null;
 
+    const currentStudent =
+        currentUser?.role === "STUDENT"
+            ? students.find(s => s.email === currentUser.email)
+            : null;
+
+    const studentAttendance =
+        currentUser?.role === "STUDENT" &&
+            currentStudent
+            ? attendance.filter(
+                (a) => a.studentId === currentStudent.id
+            ) : [];
+
     const mustMarkTeacherAttendance =
         currentUser?.role === "TEACHER" &&
         currentTeacher &&
@@ -73,9 +87,10 @@ export const SchoolProvider = ({ children }) => {
                 subjectAssignments, setSubjectAssignments,
                 users, setUsers,
                 attendance, setAttendance,
-                currentUser, currentTeacher, login, logout,
+                currentUser, currentTeacher, currentStudent,
+                login, logout,
                 teacherAttendance, setTeacherAttendance,
-                mustMarkTeacherAttendance,
+                mustMarkTeacherAttendance, studentAttendance
             }}
         >
             {children}

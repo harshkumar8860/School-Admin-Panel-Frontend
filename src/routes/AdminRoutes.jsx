@@ -9,12 +9,20 @@ import Students from '../pages/Students'
 import Sections from '../pages/Sections'
 import Classes from '../pages/Classes'
 import RoleProtectedRoute from './RoleProtectedRoute'
+import StudentAttendance from '../pages/StudentAttendance'
+
 const AdminRoutes = () => {
   return (
     <>
       {/* Accessible to ADMIN & TEACHER */}
-      <Route index element={<Dashboard />} />
-      <Route path="attendance" element={<Attendance />} />
+      {/* <Route element={<RoleProtectedRoute allowedRoles={["TEACHER"]} />}> */}
+        <Route index element={<Dashboard />} />
+        <Route path="attendance" element={<Attendance />} />
+      {/* </Route> */}
+
+      <Route element={<RoleProtectedRoute allowedRoles={["STUDENT"]} />}>
+        <Route path="student-attendance" element={<StudentAttendance />} />
+      </Route>
 
       {/* Admin only */}
       <Route element={<RoleProtectedRoute allowedRoles={["ADMIN"]} />}>
